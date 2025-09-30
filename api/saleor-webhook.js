@@ -10,8 +10,17 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "Invalid payload" });
     }
 
+    const dashboardUrl = `${process.env.SALEOR_DASHBOARD_URL}/orders/${order.id}`;
     const message = {
-      text: `🎉 New order created! Order #${order.number}`,
+      blocks: [
+        {
+          type: "section",
+          text: {
+            type: "mrkdwn",
+            text: `:sparkles: New swag order by ${order.userEmail}! View the order in dashboard: <${dashboardUrl}| #${order.number}>`,
+          },
+        },
+      ],
     };
 
     // Send message to Slack
